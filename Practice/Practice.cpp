@@ -1,20 +1,32 @@
-#include <vector>
+//stl
+#include <algorithm>
+#include <chrono>
+#include <functional>
 #include <iostream>
+#include <vector>
 
+//known implementation wrappers
+void stl_sort(std::vector<int> &input);
+
+//own
 void insertionSort(std::vector<int> &input);
 void selectionSort(std::vector<int> &input);
 void mergeSort(std::vector<int> &input);
 
+
 class ExitWatcher
 {
 public:
-	ExitWatcher(const std::vector<int> *dataIn)
-		: data(dataIn)
+	ExitWatcher(const std::vector<int> *dataIn, const std::string &nameIn)
+		: name(nameIn)
+		, data(dataIn)
 	{
 		std::cout << "Input :";
 		for(auto p: *data)
 			std::cout << p << " ";
 		std::cout << std::endl;
+
+		startTime = std::chrono::high_resolution_clock::now();
 	}
 	~ExitWatcher()
 	{
@@ -22,13 +34,16 @@ public:
 		for(auto p: *data)
 			std::cout << p << " ";
 		std::cout << std::endl;
-#ifndef __linux__
-		std::cout << "Done, press any key..." << std::endl;
-		::getchar();
-#endif
+
+		auto endTime = std::chrono::high_resolution_clock::now();
+		std::cout << name.c_str() << "\t" 
+			<< std::chrono::duration_cast<std::chrono::microseconds>(endTime-startTime).count() 
+			<< "\tmicroseconds"<< std::endl;
 	}
 private:
+	const std::string name;
 	const std::vector<int> *data;
+	std::chrono::system_clock::time_point startTime;
 };
 
 int main(int argc, char* argv[])
@@ -40,16 +55,30 @@ int main(int argc, char* argv[])
 	input[3]=26;
 	input[4]=41;
 	input[5]=58;
-	//insertionSort(input);
-	//selectionSort(input);
-	mergeSort(input);
 
+	std::vector<std::function<void(std::vector<int>&)> > functors;
+	functors.push_back(&insertionSort);
+	functors.push_back(&selectionSort);
+	functors.push_back(&mergeSort);
+	functors.push_back(&stl_sort);
+
+	for(auto f : functors)
+	{
+		//create copy of input
+		std::vector<int> data(input);
+		f(data);
+	}
+
+#ifndef __linux__
+	std::cout << "Done, press any key..." << std::endl;
+	::getchar();
+#endif
 	return 0;
 }
 
 void insertionSort(std::vector<int> &input)
 {
-	ExitWatcher watcher(&input);
+	ExitWatcher watcher(&input,"insertionSort");
 	for(auto j=0;j<input.size();++j)
 	{
 		auto currElem = input[j];
@@ -70,7 +99,7 @@ void insertionSort(std::vector<int> &input)
 
 void selectionSort(std::vector<int> &input)
 {
-	ExitWatcher watcher(&input);
+	ExitWatcher watcher(&input,"selectionSort");
 	for(size_t i=0;i<(input.size()-1);++i)
 	{
 		int minIdx(i);
@@ -115,6 +144,13 @@ void mergeSort(std::vector<int> &input, size_t l, size_t r)
 }
 void mergeSort(std::vector<int> &input)
 {
-	ExitWatcher watcher(&input);
+	ExitWatcher watcher(&input,"mergeSortIterative");
 	mergeSort(input,0,input.size());
+}
+
+//known implementation wrappers
+void stl_sort(std::vector<int> &input)
+{
+	ExitWatcher watcher(&input,"std::sort");
+	std::sort(input.begin(),input.end());
 }
