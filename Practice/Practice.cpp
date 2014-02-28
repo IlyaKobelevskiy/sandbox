@@ -1,9 +1,21 @@
 //stl
 #include <algorithm>
 #include <chrono>
+#include <cstdlib>
 #include <functional>
 #include <iostream>
 #include <vector>
+
+//input generators
+std::vector<int> generate_input(std::vector<int>::size_type n,int minVal, int maxVal)
+{
+	std::vector<int> output(n,0);
+	for(auto &p : output)
+	{
+		p = minVal + (maxVal-minVal)*std::rand()/RAND_MAX;
+	}
+	return output;
+}
 
 //known implementation wrappers
 void stl_sort(std::vector<int> &input);
@@ -48,13 +60,15 @@ private:
 
 int main(int argc, char* argv[])
 {
-	std::vector<int> input(6);
-	input[0]=31;
-	input[1]=41;
-	input[2]=59;
-	input[3]=26;
-	input[4]=41;
-	input[5]=58;
+	//std::vector<int> input(6);
+	//input[0]=31;
+	//input[1]=41;
+	//input[2]=59;
+	//input[3]=26;
+	//input[4]=41;
+	//input[5]=58;
+
+	std::vector<int> input = generate_input(100,0,100);
 
 	std::vector<std::function<void(std::vector<int>&)> > functors;
 	functors.push_back(&insertionSort);
