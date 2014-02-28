@@ -29,32 +29,42 @@ void mergeSort(std::vector<int> &input);
 class ExitWatcher
 {
 public:
-	ExitWatcher(const std::vector<int> *dataIn, const std::string &nameIn)
-		: name(nameIn)
+	ExitWatcher(const std::vector<int> *dataIn, const std::string &nameIn, bool printDataIn = false)
+		: printData(printDataIn)
+		, name(nameIn)
 		, data(dataIn)
 	{
-		std::cout << "Input :";
-		for(auto p: *data)
-			std::cout << p << " ";
-		std::cout << std::endl;
+		if(printData)
+		{
+			std::cout << "Input :";
+			for(auto p: *data)
+				std::cout << p << " ";
+			std::cout << std::endl;
+		}
 
 		startTime = std::chrono::high_resolution_clock::now();
 	}
 	~ExitWatcher()
 	{
-		std::cout << "Output :";
-		for(auto p: *data)
-			std::cout << p << " ";
-		std::cout << std::endl;
+		if(printData)
+		{
+			std::cout << "Output :";
+			for(auto p: *data)
+				std::cout << p << " ";
+			std::cout << std::endl;
+		}
 
 		auto endTime = std::chrono::high_resolution_clock::now();
 		std::cout << name.c_str() << "\t" 
 			<< std::chrono::duration_cast<std::chrono::microseconds>(endTime-startTime).count() 
-			<< "\tmicroseconds"<< std::endl;
+			<< "\tmicroseconds, is_sorted returns\t"
+			<< std::is_sorted(data->cbegin(),data->cend())
+			<< std::endl;
 	}
 private:
-	const std::string name;
-	const std::vector<int> *data;
+	bool								  printData;
+	const std::string				      name;
+	const std::vector<int>				  *data;
 	std::chrono::system_clock::time_point startTime;
 };
 
@@ -68,7 +78,7 @@ int main(int argc, char* argv[])
 	//input[4]=41;
 	//input[5]=58;
 
-	std::vector<int> input = generate_input(100,0,100);
+	std::vector<int> input = generate_input(100000,0,10000);
 
 	std::vector<std::function<void(std::vector<int>&)> > functors;
 	functors.push_back(&insertionSort);
