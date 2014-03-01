@@ -23,7 +23,9 @@ void stl_sort(std::vector<int> &input);
 //own
 void insertionSort(std::vector<int> &input);
 void selectionSort(std::vector<int> &input);
-void mergeSort(std::vector<int> &input);
+void mergeSortRecursive(std::vector<int> &input);
+void mergeSortIterative(std::vector<int> &input);
+void quickSort(std::vector<int> &input);
 
 
 class ExitWatcher
@@ -56,8 +58,8 @@ public:
 
 		auto endTime = std::chrono::high_resolution_clock::now();
 		std::cout << name.c_str() << "\t" 
-			<< std::chrono::duration_cast<std::chrono::microseconds>(endTime-startTime).count() 
-			<< "\tmicroseconds, is_sorted returns\t"
+			<< std::chrono::duration_cast<std::chrono::milliseconds>(endTime-startTime).count() 
+			<< "\tmilliseconds, is_sorted returns\t"
 			<< std::is_sorted(data->cbegin(),data->cend())
 			<< std::endl;
 	}
@@ -78,13 +80,17 @@ int main(int argc, char* argv[])
 	//input[4]=41;
 	//input[5]=58;
 
-	std::vector<int> input = generate_input(100000,0,10000);
+	std::vector<int> input = generate_input(10000000,0,10000);
 
 	std::vector<std::function<void(std::vector<int>&)> > functors;
+	functors.push_back(&stl_sort);
+	functors.push_back(&quickSort);
+	functors.push_back(&mergeSortIterative);
+	functors.push_back(&mergeSortRecursive);
 	functors.push_back(&insertionSort);
 	functors.push_back(&selectionSort);
-	functors.push_back(&mergeSort);
-	functors.push_back(&stl_sort);
+	
+	
 
 	for(auto f : functors)
 	{
@@ -140,6 +146,8 @@ void selectionSort(std::vector<int> &input)
 	}
 }
 
+
+
 void merge(std::vector<int> &data, size_t start1Idx,size_t start2Idx, size_t endIdx)
 {
 	//temp arrrays
@@ -156,20 +164,74 @@ void merge(std::vector<int> &data, size_t start1Idx,size_t start2Idx, size_t end
 		data[dataPos++]=p;
 	}
 }
-void mergeSort(std::vector<int> &input, size_t l, size_t r)
+void mergeSortRecursive(std::vector<int> &input, size_t l, size_t r)
 {
 	if(l<(r-1))
 	{
 		auto q = (l+r)/2;
-		mergeSort(input,l,q);
-		mergeSort(input,q,r);
+		mergeSortRecursive(input,l,q);
+		mergeSortRecursive(input,q,r);
 		merge(input,l,q,r);
 	}
 }
-void mergeSort(std::vector<int> &input)
+void mergeSortRecursive(std::vector<int> &input)
+{
+	ExitWatcher watcher(&input,"mergeSortRecursive");
+	mergeSortRecursive(input,0,input.size());
+}
+
+void mergeSortIterative(std::vector<int> &input)
 {
 	ExitWatcher watcher(&input,"mergeSortIterative");
-	mergeSort(input,0,input.size());
+	size_t intervalSize(1);
+	while(intervalSize<input.size())
+	{
+		for(auto i=0;i<input.size();i+=2*intervalSize)
+		{
+			merge(input,i,std::min<size_t>(i+intervalSize,input.size()),std::min<size_t>(i+2*intervalSize,input.size()));
+		}
+		intervalSize*=2;
+	}
+}
+
+template <class Iterator> inline
+void quickSort(Iterator begin,Iterator end);
+void quickSort(std::vector<int> &input)
+{
+	ExitWatcher watcher(&input,"quickSort");
+	quickSort(input.begin(),input.end());
+}
+
+template <class Iterator> inline
+void quickSort(Iterator begin, Iterator end)
+{
+	size_t inputSize = end-begin;
+	if(inputSize <=1)
+		return;
+
+	Iterator pivotPos = begin+inputSize/2;
+	auto pivotVal = *pivotPos;
+
+	//move pivot to the end
+	*pivotPos = *(end-1);
+	*(end-1) = pivotVal;
+
+	for(Iterator iter = begin; iter < (end-1); ++iter)
+	{
+		//if greater then pivot, move to the end, shifting remaining array left (insert behind pivot)
+		if(*iter > pivotVal)
+		{
+			auto currVal = *iter;
+			for(Iterator iter2 = (end-1); iter2 != iter; )
+			{
+				*iter2=*(iter2--);
+			}
+			*(end-1) = currVal;
+		}
+	}
+	//recursively call self
+	quickSort(begin,pivotPos);
+	quickSort(pivotPos,end);
 }
 
 //known implementation wrappers
