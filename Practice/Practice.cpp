@@ -5,6 +5,8 @@
 #include <functional>
 #include <iostream>
 #include <vector>
+//own
+#include "ExitWatcher.h"
 
 //input generators
 std::vector<int> generate_input(std::vector<int>::size_type n,int minVal, int maxVal)
@@ -27,60 +29,20 @@ void mergeSortRecursive(std::vector<int> &input);
 void mergeSortIterative(std::vector<int> &input);
 void quickSort(std::vector<int> &input);
 
-
-class ExitWatcher
+template <class Iterator> inline
+void insertBefore(Iterator start, Iterator end)
 {
-public:
-	ExitWatcher(const std::vector<int> *dataIn, const std::string &nameIn, bool printDataIn = false)
-		: printData(printDataIn)
-		, name(nameIn)
-		, data(dataIn)
+	auto valueToBeInserted = *end;
+	//shift right all items starting at insertion position up to the value to be inserted
+	for(Iterator it = end; it != start; *it = *(it--))
 	{
-		if(printData)
-		{
-			std::cout << "Input :";
-			for(auto p: *data)
-				std::cout << p << " ";
-			std::cout << std::endl;
-		}
-
-		startTime = std::chrono::high_resolution_clock::now();
 	}
-	~ExitWatcher()
-	{
-		if(printData)
-		{
-			std::cout << "Output :";
-			for(auto p: *data)
-				std::cout << p << " ";
-			std::cout << std::endl;
-		}
-
-		auto endTime = std::chrono::high_resolution_clock::now();
-		std::cout << name.c_str() << "\t" 
-			<< std::chrono::duration_cast<std::chrono::milliseconds>(endTime-startTime).count() 
-			<< "\tmilliseconds, is_sorted returns\t"
-			<< std::is_sorted(data->cbegin(),data->cend())
-			<< std::endl;
-	}
-private:
-	bool								  printData;
-	const std::string				      name;
-	const std::vector<int>				  *data;
-	std::chrono::system_clock::time_point startTime;
-};
+	*start = valueToBeInserted;
+}
 
 int main(int argc, char* argv[])
 {
-	//std::vector<int> input(6);
-	//input[0]=31;
-	//input[1]=41;
-	//input[2]=59;
-	//input[3]=26;
-	//input[4]=41;
-	//input[5]=58;
-
-	std::vector<int> input = generate_input(10000000,0,10000);
+	std::vector<int> input = generate_input(100000,0,100);
 
 	std::vector<std::function<void(std::vector<int>&)> > functors;
 	functors.push_back(&stl_sort);
@@ -89,9 +51,15 @@ int main(int argc, char* argv[])
 	functors.push_back(&mergeSortRecursive);
 	functors.push_back(&insertionSort);
 	functors.push_back(&selectionSort);
-	
-	
 
+	//{
+	//	std::vector<int> data(input);
+	//	{
+	//		ExitWatcher watcher(&data,"test",true);
+	//		insertBefore(data.begin(),data.begin()+5);
+	//	}
+	//}
+	
 	for(auto f : functors)
 	{
 		//create copy of input
@@ -146,8 +114,28 @@ void selectionSort(std::vector<int> &input)
 	}
 }
 
+template <class Iterator> inline
+void merge(Iterator start1Idx,Iterator start2Idx, Iterator endIdx)
+{
+	//Check if input is valid
+	if((endIdx-start1Idx) <=1 || (endIdx - start2Idx) <=0 || (start2Idx - start1Idx) <=0 )
+		return;
 
-
+	//Iterate through left array, for each element compare it with right array, 
+	Iterator rightPos(start2Idx);
+	int shiftCount(0);
+	for(Iterator iter = start1Idx; iter != (start2Idx+shiftCount);++iter)
+	{
+		///if current item in left array greater then item in right array, insert right item before current item
+		while( rightPos < endIdx && *iter > *rightPos)
+		{
+			insertBefore(iter,rightPos);
+			++iter;
+			++rightPos;
+			++shiftCount;
+		}
+	}
+}
 void merge(std::vector<int> &data, size_t start1Idx,size_t start2Idx, size_t endIdx)
 {
 	//temp arrrays
@@ -186,9 +174,10 @@ void mergeSortIterative(std::vector<int> &input)
 	size_t intervalSize(1);
 	while(intervalSize<input.size())
 	{
-		for(auto i=0;i<input.size();i+=2*intervalSize)
+		auto count(0);
+		for(std::vector<int>::iterator it=input.begin();count<input.size()/*-2*intervalSize*/;it+=2*intervalSize , count += 2*intervalSize)
 		{
-			merge(input,i,std::min<size_t>(i+intervalSize,input.size()),std::min<size_t>(i+2*intervalSize,input.size()));
+			merge(it,std::min(it+intervalSize,input.end()),std::min(it+2*intervalSize,input.end()));
 		}
 		intervalSize*=2;
 	}
@@ -201,7 +190,6 @@ void quickSort(std::vector<int> &input)
 	ExitWatcher watcher(&input,"quickSort");
 	quickSort(input.begin(),input.end());
 }
-
 template <class Iterator> inline
 void quickSort(Iterator begin, Iterator end)
 {
