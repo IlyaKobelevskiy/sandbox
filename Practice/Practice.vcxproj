@@ -78,10 +78,14 @@
   <ItemGroup>
     <ClCompile Include="ExitWatcher.cpp" />
     <ClCompile Include="Practice.cpp" />
+    <ClCompile Include="RedBlackBst.cpp" />
+    <ClCompile Include="RedBlackBstNode.cpp" />
     <ClCompile Include="SortingPractice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ExitWatcher.h" />
+    <ClInclude Include="RedBlackBst.h" />
+    <ClInclude Include="RedBlackBstNode.h" />
     <ClInclude Include="SortingPractice.h" />
     <ClInclude Include="SortingPracticeInlined.h" />
   </ItemGroup>
