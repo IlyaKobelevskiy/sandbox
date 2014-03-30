@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A55917D2-9E2B-47D6-B18F-01D504FEA61D}</ProjectGuid>
+    <ProjectGuid>{FFED1B1D-6197-46FF-9AAA-2BF812A5CDCF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Practice</RootNamespace>
+    <RootNamespace>euler13</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,15 +76,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ExitWatcher.cpp" />
-    <ClCompile Include="Practice.cpp" />
-    <ClCompile Include="SortingPractice.cpp" />
+    <Text Include="input.txt" />
+    <Text Include="output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ExitWatcher.h" />
-    <ClInclude Include="RedBlackBst.h" />
-    <ClInclude Include="SortingPractice.h" />
-    <ClInclude Include="SortingPracticeInlined.h" />
+    <ClCompile Include="BigNum.cpp" />
+    <ClCompile Include="euler13.cpp" />
+    <ClCompile Include="ScopedTimer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BigNum.h" />
+    <ClInclude Include="ScopedTimer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
