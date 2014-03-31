@@ -1,10 +1,10 @@
 //stl
+#include <algorithm>
 #include <chrono>
 #include <cstdlib>
 #include <functional>
 #include <iostream>
 #include <vector>
-#include <unordered_set>
 //own
 #include "SortingPractice.h"
 #include "ExitWatcher.h"
@@ -21,15 +21,17 @@ std::vector<int> generate_input(std::vector<int>::size_type n,int minVal, int ma
 	return output;
 }
 
-void testBstTree(std::vector<int> &input);
+//bst test
+void testBst(std::vector<int> &input);
 
 int main(int argc, char* argv[])
 {
-	std::vector<int> treeInput = generate_input(100,0,100);
-	testBstTree(treeInput);
+	//bst test
+	std::vector<int> bstInput = generate_input(100,0,100);
+	testBst(bstInput);
 
-	//sorting
 	std::vector<int> input = generate_input(10000000,0,100);
+
 	std::vector<std::function<void(std::vector<int>&)> > functors;
 	functors.push_back(&stl_sort);
 	functors.push_back(&quickSort);
@@ -45,7 +47,7 @@ int main(int argc, char* argv[])
 	//		insertBefore(data.begin(),data.begin()+5);
 	//	}
 	//}
-	
+	//
 	//for(auto f : functors)
 	//{
 	//	//create copy of input
@@ -60,14 +62,12 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void testBstTree(std::vector<int> &input)
+void testBst(std::vector<int> &input)
 {
-	ExitWatcher watcher(&input,"RedBlackBst",true);
-	//trees
-	RedBlackBst<int,int>	tree;
-	
+	ExitWatcher watcher(&input,"testBst",true);
+	RedBlackBst tree;
 	for(auto p:input)
-		tree.insert(p,p);
+		tree.insert(p);
 
-	std::cout << tree;
+	//std::cout << tree;
 }

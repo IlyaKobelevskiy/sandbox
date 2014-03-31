@@ -5,8 +5,8 @@
 #include <set>
 #include <string>
 //own
-#include "../../euler13/BigNum.h"
-#include "../../euler13/ScopedTimer.h"
+#include "../euler13/BigNum.h"
+#include "../euler13/ScopedTimer.h"
 
 using namespace std;
 
@@ -126,6 +126,11 @@ int main(int argc, char* argv[])
 		for(int i=1;i<=100;++i)
 			num*=i;
 		std::cout << num.getSumOfDigits() << std::endl;
+	}
+
+	//euler19
+	{
+
 	}
 	return 0;
 }

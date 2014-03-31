@@ -15,36 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Practice.cpp">
+    <ClCompile Include="euler9.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ExitWatcher.cpp">
+    <ClCompile Include="..\euler13\BigNum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SortingPractice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RedBlackBstNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RedBlackBst.cpp">
+    <ClCompile Include="..\euler13\ScopedTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ExitWatcher.h">
+    <ClInclude Include="..\euler13\BigNum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SortingPractice.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SortingPracticeInlined.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RedBlackBstNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RedBlackBst.h">
+    <ClInclude Include="..\euler13\ScopedTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -15,21 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="euler9.cpp">
+    <ClCompile Include="euler16.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\euler13\ScopedTimer.cpp">
+    <ClCompile Include="..\euler13\ScopedTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\euler13\BigNum.cpp">
+    <ClCompile Include="BigNum2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\euler13\ScopedTimer.h">
+    <ClInclude Include="..\euler13\ScopedTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\euler13\BigNum.h">
+    <ClInclude Include="BigNum2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{625BB168-40BA-4EF0-979B-BB0CCE5967C5}</ProjectGuid>
+    <ProjectGuid>{002EF939-493C-4628-8A3A-46E2AC81BF9C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>euler9</RootNamespace>
+    <RootNamespace>euler16</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,13 +76,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\euler13\BigNum.cpp" />
-    <ClCompile Include="..\..\euler13\ScopedTimer.cpp" />
-    <ClCompile Include="euler9.cpp" />
+    <ClCompile Include="..\euler13\ScopedTimer.cpp" />
+    <ClCompile Include="BigNum2.cpp" />
+    <ClCompile Include="euler16.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\euler13\BigNum.h" />
-    <ClInclude Include="..\..\euler13\ScopedTimer.h" />
+    <ClInclude Include="..\euler13\ScopedTimer.h" />
+    <ClInclude Include="BigNum2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

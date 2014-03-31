@@ -1,4 +1,6 @@
 #include "BigNum.h"
+//stl
+#include <vector>
 
 BigNum::BigNum(const std::string &dataIn)
 	: data(dataIn)
@@ -55,7 +57,12 @@ void BigNum::operator += (const BigNum &other)
 
 void BigNum::operator *= (const BigNum &other)
 {
-
+	const char zero = '0';
+	std::vector<BigNum>	interim;
+	for(int i=other.data.size()-1;i>=0;--i)
+	{
+		//(*this) *= (data[i]-zero;
+	}
 }
 
 void BigNum::operator *= (int  mult)
