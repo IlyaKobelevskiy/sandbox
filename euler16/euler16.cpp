@@ -5,6 +5,67 @@
 //own
 #include "BigNum2.h"
 
+typedef unsigned long long int nat;
+using namespace std;
+#include <deque>
+#include <set>
+#include <iostream>
+
+vector<nat> gensqsq(nat lim)
+{
+    vector<nat> sqsq;
+    for(nat i=1;i*i <= lim;++i)
+        sqsq.push_back(i*i);
+    return sqsq;
+}
+
+bool ispalindromic( nat n )
+{
+    if( n >= 10 && n % 10 == 0 )
+        return false;
+    deque<int> d;
+    while( n )
+    {
+        d.push_front( n % 10 );
+        n /= 10;
+    }
+    for( int i=0, j=d.size()-1; i <= j; ++i, --j )
+    {
+        if( d[i] != d[j] )
+            return false;
+    }
+    return true;
+}
+
+nat pe125()
+{
+    set<nat> s;
+    nat limit = 100000000;
+    nat total = 0;
+
+    vector<nat> sq = gensqsq(limit);
+
+    for( nat from = 0; from < sq.size(); ++from)
+    {
+        nat seqsum = 0;
+        for(nat to=from; to < sq.size(); ++to )
+        {
+            seqsum += sq[(unsigned int )to];
+            if( to == from )
+                continue;
+            if( seqsum >= limit )
+                break;
+            if( ispalindromic( seqsum ) )
+                s.insert( seqsum );
+        }
+    }
+    for( set<nat>::iterator itr = s.begin(); itr != s.end(); ++itr )
+        total += *itr;
+    std::cout << "Sum is "<<total <<", number count is "<<s.size()<<std::endl;
+    return total;
+}
+
+
 int main(int argc, char* argv)
 {
 	ScopedTimer timer;
